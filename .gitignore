@@ -1,0 +1,8 @@
+/target
+*-conflict-*
+.*-conflict-*
+.*.sw*
+/cache
+/tmp
+/tmpfs
+GEMINI.md

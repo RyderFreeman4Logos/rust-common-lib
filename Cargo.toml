@@ -1,0 +1,41 @@
+[workspace.package]
+name = "rust-common-lib"
+version = "0.0.1"
+authors = ["Ryder Freeman <RyderFreeman4Logos@gmail.com>"]
+description = """
+"""
+# documentation = ""
+# homepage = ""
+repository = "https://github.com/RyderFreeman4Logos/rust-common-lib"
+license = "Apache-2.0"
+keywords = [  ]
+categories = [  ]
+exclude = [
+  "HomebrewFormula",
+  "/.github/",
+  "/ci/",
+  "/pkg/brew",
+  "/benchsuite/",
+  "/scripts/",
+]
+# autotests = false
+edition = "2021"
+
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"
+
+[workspace]
+members = [
+    "crates/common",
+]
+
+resolver = "2"
+
