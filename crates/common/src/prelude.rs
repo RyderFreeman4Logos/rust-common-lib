@@ -1,13 +1,9 @@
-#[cfg(feature = "scalar")]
-pub mod scalar;
-pub mod http_client;
+pub use crate::http_client::*;
+pub use crate::scalar::*;
 
 pub use toml;
 
 pub use unic_langid::langid;
-
-#[cfg(feature = "scalar")]
-pub use scalar::*;
 
 pub use color_eyre;
 pub use color_eyre::Result as CResult;

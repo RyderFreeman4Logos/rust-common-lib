@@ -1,5 +1,5 @@
 
-use common_core::prelude::http_client::*;
+use common_core::http_client::*;
 use common_core::prelude::*;
 use wiremock::{MockServer, Mock, ResponseTemplate};
 use wiremock::matchers::{method, path};
@@ -80,11 +80,25 @@ fn test_onion_client_builder_and_conversion() {
 
 #[test]
 #[cfg(not(target_arch = "wasm32"))]
-fn test_onion_client_try_new_from_env() {
-    // This test relies on the environment variable NOT being set,
-    // so it falls back to the hardcoded default.
-    // A more robust test might involve setting the env var for the test process.
+fn test_onion_client_from_env() {
+    // Test with env var set
+    let key = "my-secret-key-from-env";
+    std::env::set_var("API_KEY", key);
+    let client_result = OnionClient::from_env();
+    assert!(client_result.is_ok());
+    // We can't easily inspect the headers of the final client,
+    // but we can be reasonably sure it was built correctly.
+
+    // Test with env var NOT set
     std::env::remove_var("API_KEY");
-    let client_result = OnionClient::try_new();
+    let client_result_no_key = OnionClient::from_env();
+    assert!(client_result_no_key.is_ok());
+}
+
+#[test]
+#[cfg(not(target_arch = "wasm32"))]
+fn test_onion_client_with_api_key() {
+    let api_key = "test_api_key_direct".to_string();
+    let client_result = OnionClient::with_api_key(api_key);
     assert!(client_result.is_ok());
 }

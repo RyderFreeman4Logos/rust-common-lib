@@ -86,12 +86,19 @@ pub struct OnionClient {
 
 
 impl OnionClient {
-    pub fn try_new() -> AResult<ClientWithMiddleware> {
-        let api_key = std::env::var("API_KEY").unwrap_or("eUBC6atrAXG9hXFvSvJCAhBJG3PuhpynKPvFpXQxSS54H2LuJvawmW8LvsngzeRcDQ6sqYK4dS9KFNFK732CMexgLRDAY5A72rAmHhqem5RkDcJh4jW6YT2e8ZmqHN4K".to_string());
+    pub fn from_env() -> AResult<ClientWithMiddleware> {
+        let api_key = std::env::var("API_KEY").ok();
+        OnionClientBuilder::default()
+            .retry(0u32)
+            .api_key(api_key)
+            .build()?
+            .into()
+    }
+
+    pub fn with_api_key(api_key: String) -> AResult<ClientWithMiddleware> {
         OnionClientBuilder::default()
             .retry(0u32)
             .api_key(Some(api_key))
-            // .proxy(Proxy::all("socks5://127.0.0.1:9050")?)
             .build()?
             .into()
     }

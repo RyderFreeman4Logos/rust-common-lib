@@ -1,5 +1,5 @@
 
-use common_core::prelude::scalar::*;
+use common_core::scalar::*;
 use common_core::prelude::*;
 
 #[cfg(test)]
