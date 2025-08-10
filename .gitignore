@@ -1,8 +1,8 @@
 /target
+Cargo.lock
 *-conflict-*
 .*-conflict-*
 .*.sw*
 /cache
 /tmp
 /tmpfs
-GEMINI.md
