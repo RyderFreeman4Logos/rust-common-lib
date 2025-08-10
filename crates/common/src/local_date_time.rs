@@ -1,16 +1,8 @@
 use crate::prelude::*;
 
-
-
-use chrono::{
-    Local,
-    DateTime,
-    Offset,
-    FixedOffset,
-    format::SecondsFormat,
-};
-
-
+use chrono::{format::SecondsFormat, DateTime, FixedOffset, Offset};
+#[cfg(not(target_arch = "wasm32"))]
+use chrono::Local;
 
 #[derive(Clone, Debug, Serialize, Deserialize, Builder)]
 pub struct LocalDateTime {
@@ -18,8 +10,8 @@ pub struct LocalDateTime {
     pub offset: i32,
 }
 
-
 impl LocalDateTime {
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn now() -> Self {
         let dt = Local::now();
 
@@ -31,12 +23,12 @@ impl LocalDateTime {
         }
     }
 
-    pub fn to_datetime(&self) -> AResult<DateTime::<FixedOffset>> {
-        let offset = FixedOffset::east_opt(self.offset)
-            .ok_or(msg("FixedOffset::east_opt failed"))?;
+    pub fn to_datetime(&self) -> AResult<DateTime<FixedOffset>> {
+        let offset =
+            FixedOffset::east_opt(self.offset).ok_or(msg("FixedOffset::east_opt failed"))?;
 
         let naive_utc = DateTime::from_timestamp(self.utc_timestamp, 0)
-            .ok_or(msg("DateTime::from_timestamp failed"))?
+            .ok_or(msg("DateTime::from_timestamp failed"))? 
             .naive_utc();
 
         let dt = DateTime::<FixedOffset>::from_naive_utc_and_offset(naive_utc, offset);
@@ -45,6 +37,7 @@ impl LocalDateTime {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub fn test_ldt() {
     let dt = LocalDateTime::now();
 
@@ -55,7 +48,7 @@ pub fn test_ldt() {
     // println!("\n'{}'\n", dt.offset().fix().local_minus_utc());
 }
 
-
+#[cfg(not(target_arch = "wasm32"))]
 pub fn test_dt() {
     let dt = Local::now();
 
@@ -66,8 +59,7 @@ pub fn test_dt() {
     println!("\n'{}'\n", dt.offset().fix().local_minus_utc());
 }
 
-
-#[cfg(test)]
+#[cfg(all(test, not(target_arch = "wasm32")))]
 mod test {
     use super::*;
 

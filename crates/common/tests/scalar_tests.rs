@@ -1,5 +1,3 @@
-
-use common_core::scalar::*;
 use common_core::prelude::*;
 
 #[cfg(test)]
@@ -17,10 +15,10 @@ mod scalar_tests {
     fn test_ristretto_point_byte_conversion_roundtrip() {
         let scalar = Scalar::from(67890u64);
         let point = scalar.compute_pubkey();
-        
+
         let bytes = point.to_bytes();
         let recovered_point = RistrettoPoint::from_bytes(&bytes).unwrap();
-        
+
         assert_eq!(point, recovered_point);
     }
 
@@ -47,8 +45,8 @@ mod scalar_tests {
         // This is a valid 32-byte array, but it doesn't represent a valid point on the curve.
         // (Specifically, it corresponds to a point with a negative x-coordinate, which is not canonical).
         let bytes = [
-            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
-            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0x10,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0x10,
         ];
         let result = RistrettoPoint::from_bytes(&bytes);
         assert!(result.is_err());

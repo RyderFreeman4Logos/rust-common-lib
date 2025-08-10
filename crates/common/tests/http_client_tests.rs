@@ -1,9 +1,8 @@
-
 use common_core::http_client::*;
 use common_core::prelude::*;
-use wiremock::{MockServer, Mock, ResponseTemplate};
-use wiremock::matchers::{method, path};
 use serde::{Deserialize, Serialize};
+use wiremock::matchers::{method, path};
+use wiremock::{Mock, MockServer, ResponseTemplate};
 
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 struct MockData {
@@ -16,7 +15,10 @@ struct MockData {
 async fn test_request_builder_ext_take_data_success() {
     // Arrange
     let server = MockServer::start().await;
-    let mock_data = MockData { foo: "hello".to_string(), bar: 123 };
+    let mock_data = MockData {
+        foo: "hello".to_string(),
+        bar: 123,
+    };
     let response = ResponseTemplate::new(200).set_body_json(&mock_data);
 
     Mock::given(method("GET"))
