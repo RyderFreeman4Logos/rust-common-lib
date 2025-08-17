@@ -1,5 +1,5 @@
 use common_core::prelude::*;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
 mod prelude_tests {
@@ -31,7 +31,7 @@ mod prelude_tests {
         let result = data_to_qr_png(data).unwrap();
 
         assert!(result.starts_with("data:image/png;base64,"));
-        
+
         let base64_part = result.strip_prefix("data:image/png;base64,").unwrap();
         let png_data = BS64ENGINE.decode(base64_part).unwrap();
 
